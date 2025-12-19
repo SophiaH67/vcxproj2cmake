@@ -37,13 +37,6 @@ class CMakeGenerator
     {
         HashSet<string> folders = [];
 
-        foreach (var project in projects)
-        {
-            var folder = Path.GetDirectoryName(project.AbsoluteProjectPath)!;
-            if (!folders.Add(folder))
-                throw new CatastrophicFailureException($"Directory {folder} contains two or more projects. This is not supported.");
-        }
-
         if (solution != null && !folders.Add(Path.GetDirectoryName(solution.AbsoluteSolutionPath)!))
             throw new CatastrophicFailureException($"The solution file and at least one project file are located in the same directory. This is not supported.");
     }
@@ -99,7 +92,7 @@ class CMakeGenerator
 
     void GenerateCMakeForProject(CMakeProject project, IEnumerable<CMakeProject> allProjects, Template cmakeListsTemplate, CMakeGeneratorSettings settings)
     {
-        string cmakeListsPath = Path.Combine(Path.GetDirectoryName(project.AbsoluteProjectPath)!, "CMakeLists.txt");
+        string cmakeListsPath = Path.Combine(Path.GetDirectoryName(project.AbsoluteProjectPath)!, $"{Path.GetFileNameWithoutExtension(project.AbsoluteProjectPath)}.cmake");
 
         GenerateCMake(project, allProjects, cmakeListsPath, cmakeListsTemplate, settings);
     }
