@@ -6,5 +6,5 @@ add_subdirectory({{ project_ref.path | get_directory_name | normalize_path | lit
 {{- if !solution_is_top_level ~}}
  "${CMAKE_BINARY_DIR}/{{ project_ref.project.project_name | unquoted_literal }}"
 {{- end -}}
-)
+/{{ project_ref.path | get_filename_without_extension | literal}})
 {{~ end ~}}

@@ -54,6 +54,7 @@ class CMakeGenerator
         scriptObject.Import("normalize_path", PathUtils.NormalizePath);
         scriptObject.Import("order_project_references_by_dependencies", (IEnumerable<CMakeProjectReference> pr) => ProjectDependencyUtils.OrderProjectReferencesByDependencies(pr, allProjects, logger));
         scriptObject.Import("get_directory_name", new Func<string?, string?>(Path.GetDirectoryName));
+        scriptObject.Import("get_filename_without_extension", new Func<string?, string?>(Path.GetFileNameWithoutExtension));
         scriptObject.Import("get_relative_path", new Func<string, string, string?>((path, relativeTo) => Path.GetRelativePath(relativeTo, path)));
         scriptObject.Import("prepend_relative_paths_with_cmake_current_source_dir", PrependRelativePathsWithCMakeCurrentSourceDir);
 
@@ -72,6 +73,8 @@ class CMakeGenerator
         }
         else
         {
+            string folder = Path.GetDirectoryName(destinationPath)!;
+            if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
             fileSystem.File.WriteAllText(destinationPath, result);
         }
     }
@@ -92,7 +95,7 @@ class CMakeGenerator
 
     void GenerateCMakeForProject(CMakeProject project, IEnumerable<CMakeProject> allProjects, Template cmakeListsTemplate, CMakeGeneratorSettings settings)
     {
-        string cmakeListsPath = Path.Combine(Path.GetDirectoryName(project.AbsoluteProjectPath)!, $"{Path.GetFileNameWithoutExtension(project.AbsoluteProjectPath)}.cmake");
+        string cmakeListsPath = Path.Combine(Path.GetDirectoryName(project.AbsoluteProjectPath)!, Path.GetFileNameWithoutExtension(project.AbsoluteProjectPath), "CMakeLists.txt");
 
         GenerateCMake(project, allProjects, cmakeListsPath, cmakeListsTemplate, settings);
     }

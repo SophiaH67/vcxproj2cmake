@@ -36,7 +36,7 @@ add_library({{ project_name | literal }} INTERFACE
 {{ fail $"Unsupported CMake target type: {target_type}" }}
 {{~ end ~}}
     {{~ for file in source_files | array.sort ~}}
-    {{ file | literal }}
+    ../{{ file | literal }}
     {{~ end ~}}
 )
 
