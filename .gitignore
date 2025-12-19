@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # .NET launch settings
 launchSettings.json
+
+# Nix
+result
