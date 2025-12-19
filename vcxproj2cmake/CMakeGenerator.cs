@@ -163,9 +163,9 @@ class CMakeGenerator
 
         if (!isAbsolutePath)
             if (normalizedPath == ".")
-                return "${CMAKE_CURRENT_SOURCE_DIR}";
+                return "${CMAKE_CURRENT_SOURCE_DIR}/..";
             else
-                return "${CMAKE_CURRENT_SOURCE_DIR}/" + normalizedPath;
+                return "${CMAKE_CURRENT_SOURCE_DIR}/../" + normalizedPath;
         else
             return normalizedPath;
     }
